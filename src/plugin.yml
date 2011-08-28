@@ -10,6 +10,9 @@ commands:
     description: Place a spirit
     usage: For help type /<command> help
     aliases: [spiritset,spirits]
+  shrine:
+  	description: Place a shrine
+  	usage: For help type /<command> help
 permissions:
   spirit.create:
     default: false

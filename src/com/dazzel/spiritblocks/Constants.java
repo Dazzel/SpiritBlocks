@@ -32,9 +32,9 @@ public class Constants {
         messagesAbort = config.getString("messages.abort", "You have stopped your action...");
         messagesSuccess = config.getString("messages.success", "Spirit successfully set!");
         messagesNoSuccess = config.getString("messages.noSuccess", "You have already a spirit here!");
-        messagesUnallowedBlock = config.getString("messages.unallowedBlock", "This blocktype is not allowed for spirits!");
+        messagesUnallowedBlock = config.getString("messages.unallowedBlock", "This blocktype is not allowed!");
         messagesSameName = config.getString("messages.sameName", "You allready have a spirit with this name!");
-        messagesDeleted = config.getString("messages.deleted", "Spirit successfull deleted!");
+        messagesDeleted = config.getString("messages.deleted", "Successfully deleted!");
         messagesNoSpirits = config.getString("messages.noSpirits", "You have no spirits.");
         messagesNoMoney = config.getString("messages.noMoney", "You have not enough money!");
         messagesNoPermission = config.getString("messages.noPermission", "You have not enough permissions.");
