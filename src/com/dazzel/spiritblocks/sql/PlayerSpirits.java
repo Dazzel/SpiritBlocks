@@ -104,7 +104,7 @@ public class PlayerSpirits {
             plugin.log.warning(plugin.logPrefix + "Error: " + ex.getMessage());
         }
         
-        if(count > Constants.maxSpirits) return true;
+        if(Constants.maxSpirits != 0 && count > Constants.maxSpirits) return true;
         
         return false;
     }
