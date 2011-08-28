@@ -108,7 +108,7 @@ public class Shrines {
         return 0;
     }
     
-    public ResultSet getShrines(Player player) {
+    public ResultSet getShrines() {
         String query = "SELECT * FROM shrines";
         
         return db.sqlQuery(query);
