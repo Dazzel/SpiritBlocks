@@ -1,5 +1,6 @@
 package com.dazzel.spiritblocks;
 
+import com.dazzel.spiritblocks.commands.AdminCommand;
 import com.dazzel.spiritblocks.commands.UserCommand;
 
 import java.io.File;
@@ -10,6 +11,8 @@ import java.util.logging.Logger;
 import com.dazzel.spiritblocks.listeners.SBPlayerListener;
 import com.dazzel.spiritblocks.listeners.SBEntityListener;
 import com.dazzel.spiritblocks.listeners.SBServerListener;
+import com.dazzel.spiritblocks.sql.PlayerSpirits;
+import com.dazzel.spiritblocks.sql.Shrines;
 
 import com.nijikokun.econ.register.Method;
 
@@ -29,9 +32,11 @@ public class SpiritBlocks extends JavaPlugin {
     private SBEntityListener entityListener = new SBEntityListener(this);
     private SBServerListener serverListener = new SBServerListener(this);
     public PlayerSpirits ps = new PlayerSpirits(this);
+    public Shrines sh = new Shrines(this);
     public Method econ = null;
     
     public HashMap<Player, String> spirits = new HashMap<Player, String>();
+    public HashMap<Player, String> shrines = new HashMap<Player, String>();
     public HashMap<Player, Location> lastLoc = new HashMap<Player, Location>();
     public File folder, config;
     public boolean econEnabled = Constants.economyEnabled;
@@ -43,7 +48,7 @@ public class SpiritBlocks extends JavaPlugin {
     }
     
     @Override
-    public void onDisable() {      
+    public void onDisable() {
         getInfo();
         log.info(logPrefix + "disabled");             
     }
@@ -72,7 +77,8 @@ public class SpiritBlocks extends JavaPlugin {
         getServer().getPluginManager().registerEvent(Type.PLUGIN_ENABLE, serverListener, Priority.Monitor, this);
         getServer().getPluginManager().registerEvent(Type.PLUGIN_DISABLE, serverListener, Priority.Monitor, this);
         
-        getCommand("spirit").setExecutor(new UserCommand(this));        
+        getCommand("spirit").setExecutor(new UserCommand(this));
+        getCommand("shrine").setExecutor(new AdminCommand(this));
         
         log.info(logPrefix + "enabled");
     }
@@ -89,5 +95,17 @@ public class SpiritBlocks extends JavaPlugin {
             spirits.remove(player);
         }
     }
-
+    
+    public boolean isInAdminCommand(Player player) {
+        return shrines.containsKey(player);
+    }
+    
+    public void setInAdminCommand(Player player, String name, boolean set) {
+        if(set) {
+            shrines.put(player, name);
+        }
+        else {
+            shrines.remove(player);
+        }
+    } 
 }

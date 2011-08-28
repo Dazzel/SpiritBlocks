@@ -21,7 +21,7 @@ public class PlayerSpirits {
     }
     
     public void init() {
-        db = new sqlCore(plugin.log, plugin.logPrefix, "spirits", plugin.folder.getPath());
+        db = new sqlCore(plugin.log, plugin.logPrefix, "spiritblocks", plugin.folder.getPath());
         db.initialize();
         if(!db.checkTable("spirits")) {
             System.out.println(plugin.logPrefix + "Creating table for spirits...");

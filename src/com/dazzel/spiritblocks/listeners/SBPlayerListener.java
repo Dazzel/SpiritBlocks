@@ -20,12 +20,11 @@ public class SBPlayerListener extends PlayerListener {
     
     @Override
     public void onPlayerInteract(PlayerInteractEvent event) {
-        int newSpirit;
+        int newSpirit, newShrine;
         Player player = event.getPlayer();
+        Location loc = event.getClickedBlock().getLocation();
         
-        if(plugin.isInCommand(player)) {
-            Location loc = event.getClickedBlock().getLocation();        
-            
+        if(plugin.isInCommand(player)) {    
             newSpirit = plugin.ps.newSpirit(player, loc, plugin.spirits.get(player));
             plugin.setInCommand(player, null, false);
             // rest bei UserCommand getestet
@@ -33,6 +32,13 @@ public class SBPlayerListener extends PlayerListener {
             if(newSpirit == 0) player.sendMessage(Constants.messagesSuccess);
             else if(newSpirit == 1) player.sendMessage(Constants.messagesUnallowedBlock);
             else if(newSpirit == 2) player.sendMessage(Constants.messagesNoSuccess);
+        }
+        else if(plugin.isInAdminCommand(player)) {
+            newShrine = plugin.sh.newShrine(loc, plugin.shrines.get(player));
+            plugin.setInAdminCommand(player, null, false);
+            if(newShrine == 0) player.sendMessage(Constants.messagesSuccess);
+            else if(newShrine == 1) player.sendMessage(Constants.messagesUnallowedBlock);
+            else if(newShrine == 2) player.sendMessage(Constants.messagesNoSuccess);            
         }
     }
 
