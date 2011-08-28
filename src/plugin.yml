@@ -1,0 +1,22 @@
+author: Dazzel
+database: false
+main: com.dazzel.spiritblocks.SpiritBlocks
+name: SpiritBlocks
+startup: postworld
+version: '0.5'
+discription: Let you select some blocks where you place your 'spirit'.
+commands:
+  spirit:
+    description: Place a spirit
+    usage: For help type /<command> help
+    aliases: [spiritset,spirits]
+permissions:
+  spirit.create:
+    default: false
+    description: Create a spirit
+  spirit.delete:
+    default: false
+    description: Delete a spirit
+  spirit.respwan:
+    default: false
+    description: Respawn at a spiritlocation
