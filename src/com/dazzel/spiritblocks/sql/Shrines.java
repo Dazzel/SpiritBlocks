@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
 public class Shrines {
     private final SpiritBlocks plugin;
@@ -39,7 +38,7 @@ public class Shrines {
     private boolean sameLocation(Location loc) {
         
         String query = "SELECT * FROM shrines "
-                    + "AND world = %world% "
+                    + "WHERE world = %world% "
                     + "AND x = %x% "
                     + "AND y = %y% "
                     + "AND z = %z%";
@@ -80,30 +79,29 @@ public class Shrines {
         Block block = loc.getBlock();
         Material mat = block.getType();
         
-        if(Constants.blockTypes.contains(mat.toString()) || 
-                Constants.blockTypes.contains("ALL")) return true;        
+        if(Constants.blockTypes.contains(mat.toString()) || Constants.blockTypes.contains("ALL")) return true;        
         else return false;
     }
     
     
     public void deleteShrine(String name) {
         String query = "DELETE FROM shrines "
-                + "WHRE name = %name%;";
+                + "WHERE name = %name%;";
         query = query.replaceAll("%name%", "'"+name+"'");
         
         db.deleteQuery(query);
     }
     
-    public int newShrine( Location loc, String name) {
+    public int newShrine(Location loc, String name) {
         if(!allowedBlock(loc)) return 1;
         else if(sameLocation( loc)) return 2;
         
-        db.insertQuery("INSERT INTO shrines (name, world, x ,y, z) "
-                    + "VALUES ('"+name+"', "
-                    + "'"+loc.getWorld().getName()+"', "
-                    + "'"+loc.getBlockX()+"', "
-                    + "'"+loc.getBlockY()+"', "
-                    + "'"+loc.getBlockZ()+"');");
+        db.insertQuery("INSERT INTO shrines (name, world, x, y, z) " +
+        		        "VALUES ('"+name+"', " +
+        		        "'"+loc.getWorld().getName()+"', " +
+        		        "'"+loc.getBlockX()+"', " +
+        		        "'"+loc.getBlockY()+"', " +
+        		        "'"+loc.getBlockZ()+"');");
         
         return 0;
     }
@@ -113,5 +111,61 @@ public class Shrines {
         
         return db.sqlQuery(query);
     }
+    
+    public double getX(int id) {
+        String query = "SELECT x FROM shrines WHERE id = "+id;
+        ResultSet res = db.sqlQuery(query);
+        double n = -1.0;
+        
+        try {
+            n = res.getDouble(1);
+        } catch(SQLException ex) {
+            plugin.log.warning(plugin.logPrefix + "Error: " + ex.getMessage());
+        }
+        
+        return n;
+    }
+    
+    public double getY(int id) {
+        String query = "SELECT y FROM shrines WHERE id = "+id;
+        ResultSet res = db.sqlQuery(query);
+        double n = -1.0;
+        
+        try {
+            n = res.getDouble(1);
+        } catch(SQLException ex) {
+            plugin.log.warning(plugin.logPrefix + "Error: " + ex.getMessage());
+        }
+        
+        return n;
+    }  
+    
+    public double getZ(int id) {
+        String query = "SELECT z FROM shrines WHERE id = "+id;
+        ResultSet res = db.sqlQuery(query);
+        double n = -1.0;
+        
+        try {
+            n = res.getDouble(1);
+        } catch(SQLException ex) {
+            plugin.log.warning(plugin.logPrefix + "Error: " + ex.getMessage());
+        }
+        
+        return n;
+    }  
+    
+    public String getWorld(int id) {
+        String query = "SELECT world FROM shrines WHERE id = "+id;
+        ResultSet res = db.sqlQuery(query);
+        String n = null;
+        
+        try {
+            n = res.getString(1);
+        } catch(SQLException ex) {
+            plugin.log.warning(plugin.logPrefix + "Error: " + ex.getMessage());
+        }
+        
+        return n;
+    }     
     
 }

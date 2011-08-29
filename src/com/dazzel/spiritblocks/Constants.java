@@ -8,9 +8,10 @@ public class Constants {
     public static int maxSpirits;
     public static String messagesCreate, messagesAbort, messagesSuccess, 
             messagesNoSuccess, messagesUnallowedBlock, messagesSameName,
-            messagesDeleted, messagesNoSpirits, messagesNoMoney, messagesNoPermission;
+            messagesDeleted, messagesNoSpirits, messagesNoMoney, messagesNoPermission,
+            messagesNoShrine;
     public static List<String> blockTypes = new ArrayList<String>();
-    public static boolean economyEnabled, economyCreate, economyRespwan;
+    public static boolean economyEnabled, economyCreate, economyRespwan, shrineEnabled;
     public static int economyCreateCosts, economyRespawnCosts;
     public static void load(Configuration config) { 
         config.load();
@@ -28,6 +29,8 @@ public class Constants {
         economyCreateCosts = config.getInt("economy.create.costs", 50);
         economyRespawnCosts = config.getInt("economy.respawn.costs", 100);
         
+        shrineEnabled = config.getBoolean("shrine.enabled", false);
+        
         messagesCreate = config.getString("messages.create", "Now set your place for your spirit!");
         messagesAbort = config.getString("messages.abort", "You have stopped your action...");
         messagesSuccess = config.getString("messages.success", "Spirit successfully set!");
@@ -38,6 +41,7 @@ public class Constants {
         messagesNoSpirits = config.getString("messages.noSpirits", "You have no spirits.");
         messagesNoMoney = config.getString("messages.noMoney", "You have not enough money!");
         messagesNoPermission = config.getString("messages.noPermission", "You have not enough permissions.");
+        messagesNoShrine = config.getString("messages.noShrine", "No shrine here!");
         
         config.save();
     }

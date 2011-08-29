@@ -23,9 +23,9 @@ public class SBServerListener extends ServerListener {
             boolean check = Methods.checkDisabled(event.getPlugin());
 
             if(check) {
-                plugin.econ = null;
-                plugin.econEnabled = false;
                 plugin.log.info(plugin.logPrefix + "disabled payment with " +plugin.econ.getName()+ " version: " +plugin.econ.getVersion());
+                plugin.econ = null;
+                plugin.econEnabled = false;                
             }
         }
     }

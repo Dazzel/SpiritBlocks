@@ -69,6 +69,7 @@ public class SpiritBlocks extends JavaPlugin {
         
         log.info(logPrefix + "Checking SQLite...");
         ps.init();
+        sh.init();
         log.info(logPrefix + "SQLite check successful!");    
         
         getServer().getPluginManager().registerEvent(Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
