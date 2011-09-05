@@ -14,6 +14,12 @@ commands:
     description: Place a shrine
     usage: For help type /<command> help
 permissions:
+  spirit.*:
+    description: Access to all spirit functions
+    children:
+      spirit.create: true
+      spirit.delete: true
+      spirit.respawn: true
   spirit.create:
     default: false
     description: Create a spirit
@@ -33,4 +39,4 @@ permissions:
     description: Create a shrine
   shrine.delete:
     default: op
-    description: Delete a shrine    
+    description: Delete a shrine

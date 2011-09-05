@@ -22,14 +22,19 @@ public class UserCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] args) {
         if(cs instanceof Player && args.length >= 1) {
             Player player = (Player)cs;
-            boolean noPerm = false;
             
             if(args[0].equalsIgnoreCase("create") && args.length >= 2) {
-                if(!player.hasPermission("spirit.create")) noPerm = true;
+                if(!player.hasPermission("spirit.create")) {
+                    player.sendMessage(Constants.messagesNoPermission);
+                    return true;
+                }
                 return createCommand(cs, player, args);
             }
             else if(args[0].equalsIgnoreCase("delete") && args.length >= 2) {
-                if(!player.hasPermission("spirit.delete")) noPerm = true;
+                if(!player.hasPermission("spirit.delete")){
+                    player.sendMessage(Constants.messagesNoPermission);
+                    return true;
+                }
                 return deleteCommand(cs, player, args);
             }
             else if(args[0].equalsIgnoreCase("list")) {
@@ -40,10 +45,6 @@ public class UserCommand implements CommandExecutor {
             }
             else if(args[0].equalsIgnoreCase("help")) {
                 return helpCommand(cs);
-            }
-            if(noPerm) {
-                player.sendMessage(Constants.messagesNoPermission);
-                return true;
             }
         }
         
