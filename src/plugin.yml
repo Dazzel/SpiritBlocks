@@ -3,7 +3,7 @@ database: false
 main: com.dazzel.spiritblocks.SpiritBlocks
 name: SpiritBlocks
 startup: postworld
-version: '0.6'
+version: '0.7'
 discription: Let you select some blocks where you place your 'spirit'.
 commands:
   spirit:
