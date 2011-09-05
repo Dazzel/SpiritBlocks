@@ -1,11 +1,12 @@
 package com.dazzel.spiritblocks.sql;
 
-import com.alta189.sqlLibrary.SQLite.sqlCore;
 import com.dazzel.spiritblocks.Constants;
 import com.dazzel.spiritblocks.SpiritBlocks;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import lib.PatPeter.SQLibrary.SQLite;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,26 +15,26 @@ import org.bukkit.entity.Player;
 
 public class PlayerSpirits {
     private final SpiritBlocks plugin;
-    private sqlCore db;
+    private SQLite db;
 
     public PlayerSpirits(SpiritBlocks plugin) {
         this.plugin = plugin;  
     }
     
     public void init() {
-        db = new sqlCore(plugin.log, plugin.logPrefix, "spiritblocks", plugin.folder.getPath());
-        db.initialize();
+        db = new SQLite(plugin.log, plugin.logPrefix, "spiritblocks", plugin.folder.getPath());
+        db.open();
         if(!db.checkTable("spirits")) {
             System.out.println(plugin.logPrefix + "Creating table for spirits...");
             String query = "CREATE TABLE 'spirits' "
-                        + "('id' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , "
-                        + "'sID' INTEGER DEFAULT 0, "
-                        + "'player' VARCHAR, "
-                        + "'name' VARCHAR, "
-                        + "'world' VARCHAR, "
-                        + "'x' DOUBLE DEFAULT 0, "
-                        + "'y' DOUBLE DEFAULT 0, "
-                        + "'z' DOUBLE DEFAULT 0)";
+                    + "('id' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , "
+                    + "'sID' INTEGER DEFAULT 0, "
+                    + "'player' VARCHAR, "
+                    + "'name' VARCHAR, "
+                    + "'world' VARCHAR, "
+                    + "'x' DOUBLE DEFAULT 0, "
+                    + "'y' DOUBLE DEFAULT 0, "
+                    + "'z' DOUBLE DEFAULT 0)";
             db.createTable(query);
         }
     }
@@ -63,7 +64,7 @@ public class PlayerSpirits {
         query = query.replaceAll("%y%", "'"+loc.getBlockY()+"'");
         query = query.replaceAll("%z%", "'"+loc.getBlockZ()+"'");
         
-        ResultSet res = db.sqlQuery(query);
+        ResultSet res = db.query(query);
         try {
             if(res.next()) return true;
         } catch (SQLException ex) {
@@ -83,7 +84,7 @@ public class PlayerSpirits {
         query = query.replaceAll("%player%", "'"+player.getName().toLowerCase()+"'");
         query = query.replaceAll("%name%", "'"+name+"'");
         
-        ResultSet res = db.sqlQuery(query);
+        ResultSet res = db.query(query);
         try {
             if(res.next()) return true;
         } catch (SQLException ex) {
@@ -108,7 +109,7 @@ public class PlayerSpirits {
         String query = "SELECT COUNT(id) FROM spirits WHERE player = %player%";
         query = query.replaceAll("%player%", "'"+player.getName().toLowerCase()+"'");
         
-        ResultSet res = db.sqlQuery(query);
+        ResultSet res = db.query(query);
         try {
             count = res.getInt(1);
         } catch (SQLException ex) {
@@ -132,7 +133,7 @@ public class PlayerSpirits {
         query = query.replaceAll("%y%", "'"+loc.getBlockY()+"'");
         query = query.replaceAll("%z%", "'"+loc.getBlockZ()+"'");
         
-        ResultSet res = db.sqlQuery(query);
+        ResultSet res = db.query(query);
         try {
             if(res.next()) return res.getInt(1);
         } catch(SQLException ex) {
@@ -150,7 +151,7 @@ public class PlayerSpirits {
             String query = "DELETE FROM spirits "
                     + "WHERE id = "+id+";";
 
-            db.deleteQuery(query);            
+            db.query(query);            
         } catch (SQLException ex) {
             plugin.log.warning(plugin.logPrefix + "Error: " + ex.getMessage());
         }        
@@ -163,7 +164,7 @@ public class PlayerSpirits {
         query = query.replaceAll("%player%", "'"+player.getName().toLowerCase()+"'");
         query = query.replaceAll("%name%", "'"+name+"'");
         
-        db.deleteQuery(query);
+        db.query(query);
     }
     
     public int newSpirit(Player player, Location loc, String name) {
@@ -188,7 +189,7 @@ public class PlayerSpirits {
                     + "'"+loc.getWorld().getName()+"');";
         }
         
-        db.insertQuery(query);
+        db.query(query);
         
         return 0;
     }
@@ -197,7 +198,7 @@ public class PlayerSpirits {
         String query = "SELECT * FROM spirits WHERE player = %player%";
         query = query.replaceAll("%player%", "'"+player.getName().toLowerCase()+"'");
         
-        return db.sqlQuery(query);
+        return db.query(query);
     }
     
     public boolean hasSpirits(Player player) {       

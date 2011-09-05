@@ -2,6 +2,7 @@ package com.dazzel.spiritblocks;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.bukkit.util.config.Configuration;
 
 public class Constants {
@@ -43,6 +44,6 @@ public class Constants {
         messagesNoPermission = config.getString("messages.noPermission", "You have not enough permissions.");
         messagesNoShrine = config.getString("messages.noShrine", "No shrine here!");
         
-        config.save();
+        config.save();  
     }
 }

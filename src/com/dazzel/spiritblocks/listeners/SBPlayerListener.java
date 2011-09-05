@@ -55,7 +55,12 @@ public class SBPlayerListener extends PlayerListener {
         if(loc == null) return;
         
         plugin.lastLoc.remove(player);
-
+        
+        if(!player.hasPermission("spirit.respawn")) {
+            player.sendMessage(Constants.messagesNoPermission);
+            return;
+        }
+        
         if(plugin.econEnabled && Constants.economyRespwan) {
             if(plugin.econ.hasAccount(player.getName())) {
                 if(plugin.econ.getAccount(player.getName()).hasEnough(Constants.economyRespawnCosts)) {

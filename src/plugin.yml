@@ -20,6 +20,17 @@ permissions:
   spirit.delete:
     default: false
     description: Delete a spirit
-  spirit.respwan:
+  spirit.respawn:
     default: false
-    description: Respawn at a spiritlocation
+    description: Respawn at a spiritlocation    
+  shrine.*: 
+    description: Gives all shrine options
+    children:
+      shrine.create: true
+      shrine.delete: true
+  shrine.create:
+    default: op
+    description: Create a shrine
+  shrine.delete:
+    default: op
+    description: Delete a shrine    

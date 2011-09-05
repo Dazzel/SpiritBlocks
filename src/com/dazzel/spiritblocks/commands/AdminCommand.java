@@ -22,13 +22,22 @@ public class AdminCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] args) {
         if(cs instanceof Player && args.length >= 1) {
             Player player = (Player)cs;
+            boolean create, delete, noPerm = false;
+            
+            create = player.hasPermission("shrine.create");
+            delete = player.hasPermission("shrine.delete");
+            
+            if(!create || !delete) noPerm = true;
+            
             if(args[0].equalsIgnoreCase("create") && args.length >= 2) { 
+                if(!create) noPerm = true;
                 return createCommand(cs, player, args);
             }
             else if(args[0].equalsIgnoreCase("abort")) {
                 return abortCommand(cs, player);
             }
             else if(args[0].equalsIgnoreCase("delete") && args.length >= 2) {
+                if(!delete) noPerm = true;
                 return deleteCommand(cs, args);
             }
             else if(args[0].equalsIgnoreCase("list")) {
@@ -37,8 +46,11 @@ public class AdminCommand implements CommandExecutor {
             else if(args[0].equalsIgnoreCase("help")) {
                 return helpCommand(cs);
             }
+            if(noPerm) {
+               player.sendMessage(Constants.messagesNoPermission);
+               return true;
+            }
         }
-        
         return false;
     }
     
@@ -86,8 +98,8 @@ public class AdminCommand implements CommandExecutor {
     }
     
     private boolean abortCommand(CommandSender cs, Player player) {
-        if(plugin.isInCommand(player)) {
-            plugin.setInCommand(player, null, false);
+        if(plugin.isInAdminCommand(player)) {
+            plugin.setInAdminCommand(player, null, false);
             cs.sendMessage(Constants.messagesAbort);                   
         }
 

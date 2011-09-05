@@ -1,11 +1,12 @@
 package com.dazzel.spiritblocks.sql;
 
-import com.alta189.sqlLibrary.SQLite.sqlCore;
 import com.dazzel.spiritblocks.Constants;
 import com.dazzel.spiritblocks.SpiritBlocks;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import lib.PatPeter.SQLibrary.SQLite;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,15 +14,15 @@ import org.bukkit.block.Block;
 
 public class Shrines {
     private final SpiritBlocks plugin;
-    private sqlCore db;
+    private SQLite db;
 
     public Shrines(SpiritBlocks plugin) {
         this.plugin = plugin;  
     }
     
     public void init() {
-        db = new sqlCore(plugin.log, plugin.logPrefix, "spiritblocks", plugin.folder.getPath());
-        db.initialize();
+        db = new SQLite(plugin.log, plugin.logPrefix, "spiritblocks", plugin.folder.getPath());
+        db.open();
         if(!db.checkTable("shrines")) {
             System.out.println(plugin.logPrefix + "Creating table for shrines...");
             String query = "CREATE TABLE 'shrines' "
@@ -47,7 +48,7 @@ public class Shrines {
         query = query.replaceAll("%y%", "'"+loc.getBlockY()+"'");
         query = query.replaceAll("%z%", "'"+loc.getBlockZ()+"'");
         
-        ResultSet res = db.sqlQuery(query);
+        ResultSet res = db.query(query);
         try {
             if(res.next()) return true;
         } catch (SQLException ex) {
@@ -64,7 +65,7 @@ public class Shrines {
                 + "WHERE name = %name%";
         query = query.replaceAll("%name%", "'"+name+"'");
         
-        ResultSet res = db.sqlQuery(query);
+        ResultSet res = db.query(query);
         try {
             if(res.next()) return true;
         } catch (SQLException ex) {
@@ -89,14 +90,14 @@ public class Shrines {
                 + "WHERE name = %name%;";
         query = query.replaceAll("%name%", "'"+name+"'");
         
-        db.deleteQuery(query);
+        db.query(query);
     }
     
     public int newShrine(Location loc, String name) {
         if(!allowedBlock(loc)) return 1;
         else if(sameLocation( loc)) return 2;
         
-        db.insertQuery("INSERT INTO shrines (name, world, x, y, z) " +
+        db.query("INSERT INTO shrines (name, world, x, y, z) " +
         		        "VALUES ('"+name+"', " +
         		        "'"+loc.getWorld().getName()+"', " +
         		        "'"+loc.getBlockX()+"', " +
@@ -109,12 +110,12 @@ public class Shrines {
     public ResultSet getShrines() {
         String query = "SELECT * FROM shrines";
         
-        return db.sqlQuery(query);
+        return db.query(query);
     }
     
     public double getX(int id) {
         String query = "SELECT x FROM shrines WHERE id = "+id;
-        ResultSet res = db.sqlQuery(query);
+        ResultSet res = db.query(query);
         double n = -1.0;
         
         try {
@@ -128,7 +129,7 @@ public class Shrines {
     
     public double getY(int id) {
         String query = "SELECT y FROM shrines WHERE id = "+id;
-        ResultSet res = db.sqlQuery(query);
+        ResultSet res = db.query(query);
         double n = -1.0;
         
         try {
@@ -142,7 +143,7 @@ public class Shrines {
     
     public double getZ(int id) {
         String query = "SELECT z FROM shrines WHERE id = "+id;
-        ResultSet res = db.sqlQuery(query);
+        ResultSet res = db.query(query);
         double n = -1.0;
         
         try {
@@ -156,7 +157,7 @@ public class Shrines {
     
     public String getWorld(int id) {
         String query = "SELECT world FROM shrines WHERE id = "+id;
-        ResultSet res = db.sqlQuery(query);
+        ResultSet res = db.query(query);
         String n = null;
         
         try {
